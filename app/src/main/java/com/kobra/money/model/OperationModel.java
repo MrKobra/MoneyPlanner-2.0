@@ -103,6 +103,8 @@ public class OperationModel {
         private long categoryId;
         private long bankCardId;
         private LocalDate date;
+        private CategoryModel.Category category;
+        private TypeModel.Type type;
 
         public Operation(JSONObject item) throws JSONException {
             id = item.getLong("id");
@@ -111,6 +113,20 @@ public class OperationModel {
             categoryId = item.getLong("term_id");
             bankCardId = item.getLong("bank_card_id");
             date = LocalDate.parse(item.getString("date"));
+            try {
+                JSONObject categoryJSON = item.getJSONObject("category");
+                category = new CategoryModel.Category(categoryJSON);
+            }
+            catch (JSONException exception) {
+                category = null;
+            }
+            try {
+                JSONObject typeJSON = item.getJSONObject("type");
+                type = new TypeModel.Type(typeJSON);
+            }
+            catch (JSONException exception) {
+                type = null;
+            }
         }
 
         public long getId() {
@@ -159,6 +175,22 @@ public class OperationModel {
 
         public void setDate(LocalDate date) {
             this.date = date;
+        }
+
+        public CategoryModel.Category getCategory() {
+            return category;
+        }
+
+        public void setCategory(CategoryModel.Category category) {
+            this.category = category;
+        }
+
+        public TypeModel.Type getType() {
+            return type;
+        }
+
+        public void setType(TypeModel.Type type) {
+            this.type = type;
         }
     }
 }
