@@ -1,6 +1,8 @@
 package com.kobra.money.controller;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,10 @@ public class OperationController {
         createModel();
     }
 
+    public void setView(OperationView view) {
+        this.view = view;
+    }
+
     public void setItems(HashMap<String, String> args) {
         if(model.isRunning()) {
             modelRequestQueue.add(new ModelRequest() {
@@ -39,6 +45,50 @@ public class OperationController {
             });
         } else {
             model.setList(args, request, null);
+        }
+    }
+
+    public void print() {
+        if(view != null) {
+            if (model.isRunning()) {
+                modelRequestQueue.add(new ModelRequest() {
+                    @Override
+                    public void request() {
+                        view.setOperations(model.getList());
+                        view.print();
+                    }
+                });
+            } else {
+                view.setOperations(model.getList());
+                view.print();
+            }
+        }
+    }
+
+    public void update() {
+        OperationModel.Event event = new OperationModel.Event() {
+            @Override
+            public void onSuccess() {
+                if(view != null) {
+                    view.update();
+                }
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        };
+
+        if (model.isRunning()) {
+            modelRequestQueue.add(new ModelRequest() {
+                @Override
+                public void request() {
+                    model.update(request, event);
+                }
+            });
+        } else {
+            model.update(request, event);
         }
     }
 
@@ -55,10 +105,6 @@ public class OperationController {
             }
         };
         model = new OperationModel(event);
-    }
-
-    private void setView(OperationView view) {
-        this.view = view;
     }
 
     public interface Event {
