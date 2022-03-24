@@ -44,11 +44,15 @@ public class CustomRequest {
                 case OPERATION:
                     args.put("entity", "operation");
                     break;
+                case USER:
+                    args.put("entity", "user");
+                    break;
             }
         }
     }
 
     public enum Entity {
-        OPERATION
+        OPERATION,
+        USER
     }
 }
