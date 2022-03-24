@@ -2,15 +2,39 @@
     <!-- Base application theme. -->
     <style name="Theme.MoneyPlanner" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/normal</item>
+        <item name="colorPrimaryVariant">@color/normal</item>
+        <item name="colorOnPrimary">@color/minor</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/active</item>
+        <item name="colorSecondaryVariant">@color/active</item>
+        <item name="colorOnSecondary">@color/main</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.MoneyPlanner.BackgroundContent">
+        <item name="cardBackgroundColor">@color/background_content</item>
+        <item name="cardCornerRadius">10dp</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.Text">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/main</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.ContainerContent">
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.Heading">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="fontWeight">700</item>
+        <item name="android:textSize">20sp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textColor">@color/main</item>
     </style>
 </resources>
