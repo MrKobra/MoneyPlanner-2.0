@@ -1,5 +1,7 @@
 package com.kobra.money.request;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.android.volley.Request;
@@ -40,7 +42,7 @@ public class CustomRequest {
         if(entity != null) {
             switch (entity) {
                 case OPERATION:
-                    args.put("table", "operation");
+                    args.put("entity", "operation");
                     break;
             }
         }
