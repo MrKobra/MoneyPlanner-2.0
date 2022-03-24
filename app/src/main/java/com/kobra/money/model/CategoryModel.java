@@ -1,5 +1,7 @@
 package com.kobra.money.model;
 
+import android.content.Context;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,6 +80,10 @@ public class CategoryModel {
 
         public void setDelete(boolean delete) {
             this.delete = delete;
+        }
+
+        public int getIconID(Context context) {
+            return context.getResources().getIdentifier(icon,"drawable", context.getPackageName());
         }
     }
 }
