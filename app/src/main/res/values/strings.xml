@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Money Planner</string>
+
+    <!-- Заголовоки -->
+    <string name="last_operation_heading">Последние операции</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
