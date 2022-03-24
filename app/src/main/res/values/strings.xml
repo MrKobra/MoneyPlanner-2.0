@@ -3,9 +3,17 @@
 
     <!-- Заголовоки -->
     <string name="last_operation_heading">Последние операции</string>
+    <string name="authorization_heading">Авторизация</string>
 
     <!-- Уведомления -->
     <string name="empty_operation">Последних операций не найдено.\nДобавьте свою первую операцию прямо сейчас!</string>
+
+    <!-- Названия полей -->
+    <string name="username_field">Имя пользователя</string>
+    <string name="password_field">Пароль</string>
+
+    <!-- Названия кнопок -->
+    <string name="login_button">Войти</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
