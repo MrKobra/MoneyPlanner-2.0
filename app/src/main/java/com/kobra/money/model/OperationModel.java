@@ -1,5 +1,7 @@
 package com.kobra.money.model;
 
+import android.util.Log;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.kobra.money.controller.OperationController;
@@ -18,6 +20,7 @@ public class OperationModel {
     private List<Operation> list;
     private boolean running;
     private OperationController.Event event;
+    private HashMap<String, String> queryArgs;
 
     public OperationModel(OperationController.Event event) {
         this.event = event;
@@ -32,6 +35,8 @@ public class OperationModel {
 
     public void setList(HashMap<String, String> args, CustomRequest request, Event event) {
         setRunning(true);
+
+        queryArgs = args;
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -67,8 +72,47 @@ public class OperationModel {
                 "get", args);
     }
 
+    public void update(CustomRequest request, Event event) {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject result = new JSONObject(response);
+                    if(result.getInt("error") == 0) {
+                        JSONArray items = result.getJSONArray("items");
+                        setList(items);
+                        if(event != null) event.onSuccess();
+                    } else {
+                        if(event != null) event.onError();
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                    if(event != null) event.onError();
+                }
+
+                setRunning(false);
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                if(event != null) event.onError();
+                setRunning(false);
+            }
+        };
+
+        request.request(responseListener, errorListener, CustomRequest.Entity.OPERATION,
+                "get", queryArgs);
+    }
+
     public boolean isRunning() {
         return running;
+    }
+
+    public List<Operation> getList() {
+        return list;
     }
 
     private void add(JSONArray items) {
@@ -110,7 +154,7 @@ public class OperationModel {
             id = item.getLong("id");
             amount = item.getInt("amount");
             typeId = item.getLong("type_id");
-            categoryId = item.getLong("term_id");
+            categoryId = item.getLong("category_id");
             bankCardId = item.getLong("bank_card_id");
             date = LocalDate.parse(item.getString("date"));
             try {
