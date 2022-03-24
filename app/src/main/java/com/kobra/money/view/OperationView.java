@@ -1,5 +1,6 @@
 package com.kobra.money.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,13 +34,16 @@ public class OperationView extends ViewModel {
         if(operations != null && operations.size() > 0) {
             adapter.setItems(operations);
             if(adapter instanceof RecyclerView.Adapter) {
-                recyclerView.setAdapter((RecyclerView.Adapter) adapter);
+                recyclerView.setAdapter((RecyclerView.Adapter<?>) adapter);
             }
         }
     }
 
     @Override
     public void update() {
+        if(adapter != null && adapter instanceof RecyclerView.Adapter) {
+            ((RecyclerView.Adapter<?>) adapter).notifyDataSetChanged();
+        }
     }
 
     private void init() {
