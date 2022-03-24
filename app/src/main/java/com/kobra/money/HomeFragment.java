@@ -49,6 +49,7 @@ public class HomeFragment extends Fragment {
         operationController.setItems(new HashMap<String, String>(){{
             put("include_category", "1");
             put("include_type", "1");
+            put("user_id", "4");
         }});
     }
 
@@ -56,8 +57,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragment = inflater.inflate(R.layout.fragment_home, container, false);
-        operationController.setView(new OperationView(context, fragment.findViewById(R.id.operationsList),
-                new ListOperationAdapter(context)));
+
+        OperationView operationView = new OperationView(context, fragment.findViewById(R.id.operationsList),
+                new ListOperationAdapter(context));
+        operationView.setEmptyNotify(fragment.findViewById(R.id.emptyOperation));
+        operationController.setView(operationView);
         operationController.print();
 
         return fragment;
