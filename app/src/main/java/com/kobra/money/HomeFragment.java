@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kobra.money.controller.AddOperationController;
 import com.kobra.money.controller.AuthController;
 import com.kobra.money.controller.OperationController;
+import com.kobra.money.model.CategoryModel;
 import com.kobra.money.model.OperationModel;
 import com.kobra.money.view.Loader;
 import com.kobra.money.view.OperationView;
@@ -37,6 +39,7 @@ public class HomeFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private OperationController operationController;
+    private AddOperationController addOperationController;
 
     public HomeFragment() {
         loader = new Loader(1);
@@ -79,6 +82,21 @@ public class HomeFragment extends Fragment {
                 loader.add(1);
             }
         });
+
+        addOperationController = new AddOperationController(context);
+        addOperationController.setCategories(new HashMap<String, String>() {{
+            put("limit", "16");
+        }}, new CategoryModel.Event() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 
     @Override
@@ -98,6 +116,8 @@ public class HomeFragment extends Fragment {
         operationView.setEmptyNotify(fragment.findViewById(R.id.emptyOperation));
         operationController.setView(operationView);
         operationController.print();
+
+        addOperationController.setView(fragment.findViewById(R.id.formAddOperation));
 
         return fragment;
     }
