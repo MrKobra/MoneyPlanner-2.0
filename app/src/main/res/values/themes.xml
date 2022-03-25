@@ -17,6 +17,7 @@
     <style name="Theme.MoneyPlanner.BackgroundContent">
         <item name="cardBackgroundColor">@color/background_content</item>
         <item name="cardCornerRadius">10dp</item>
+        <item name="cardElevation">0dp</item>
     </style>
 
     <style name="Theme.MoneyPlanner.Text">
@@ -36,5 +37,47 @@
         <item name="android:textSize">20sp</item>
         <item name="textAllCaps">true</item>
         <item name="android:textColor">@color/main</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">45dp</item>
+        <item name="backgroundTint">@color/normal</item>
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/border</item>
+        <item name="android:backgroundTint">@color/normal</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.EditTextLabel">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.Button">
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:backgroundTint">@color/normal</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:minHeight">55dp</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.FormLoader">
+        <item name="cardBackgroundColor">@color/background_content</item>
+        <item name="android:alpha">0.8</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.ProgressLoader">
+        <item name="android:indeterminateTint">@color/normal</item>
+        <item name="android:indeterminateTintMode">src_atop</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
     </style>
 </resources>
