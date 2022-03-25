@@ -47,12 +47,20 @@ public class CustomRequest {
                 case USER:
                     args.put("entity", "user");
                     break;
+                case CATEGORY:
+                    args.put("entity", "category");
+                    break;
+                case TYPE:
+                    args.put("entity", "type");
+                    break;
             }
         }
     }
 
     public enum Entity {
         OPERATION,
-        USER
+        USER,
+        CATEGORY,
+        TYPE
     }
 }
