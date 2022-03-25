@@ -1,27 +1,32 @@
 package com.kobra.money.controller;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.kobra.money.Login;
-import com.kobra.money.model.OperationModel;
+import com.kobra.money.LoginActivity;
+import com.kobra.money.MainActivity;
+import com.kobra.money.include.AppSettings;
+import com.kobra.money.include.UserException;
 import com.kobra.money.model.UserModel;
 import com.kobra.money.request.CustomRequest;
+import com.kobra.money.view.form.Form;
+import com.kobra.money.view.form.LoginForm;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayDeque;
 import java.util.HashMap;
 
 public class AuthController {
     private Context context;
     private CustomRequest request;
+
+    private LoginForm loginForm;
 
     public static UserModel.User authUser;
 
@@ -30,6 +35,41 @@ public class AuthController {
         request = new CustomRequest(Volley.newRequestQueue(context));
     }
 
+    public void setLoginForm(LoginForm loginForm) {
+        this.loginForm = loginForm;
+        loginForm.setSubmitEvent(new Form.Event() {
+            @Override
+            public void onSuccess() {
+                loginForm.showFormLoader();
+
+                HashMap<String, String> args = new HashMap<String, String>() {{
+                   for (Form.FormField field : loginForm.getFormFields()) {
+                       put(field.getName(), field.getEdit().getText().toString());
+                   }
+                }};
+                auth(args, new Event() {
+                    @Override
+                    public void onSuccess() {
+                        loginForm.hideFormLoader();
+                        Intent mainIntent = new Intent(context, MainActivity.class);
+                        context.startActivity(mainIntent);
+                    }
+
+                    @Override
+                    public void onError() {
+                        loginForm.hideFormLoader();
+                        Toast.makeText(context, UserException.getErrorMessageByTable(3),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(UserException exception) {
+                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public void isLogin(String token, Event event) {
         if(token != null && token.length() > 0) {
@@ -40,7 +80,7 @@ public class AuthController {
                 @Override
                 public void onSuccess() {
                     if (authUser == null) {
-                        Intent authIntent = new Intent(context, Login.class);
+                        Intent authIntent = new Intent(context, LoginActivity.class);
                         context.startActivity(authIntent);
                         if (event != null) event.onError();
                     } else {
@@ -50,13 +90,13 @@ public class AuthController {
 
                 @Override
                 public void onError() {
-                    Intent authIntent = new Intent(context, Login.class);
+                    Intent authIntent = new Intent(context, LoginActivity.class);
                     context.startActivity(authIntent);
                     if (event != null) event.onError();
                 }
             });
         } else {
-            Intent authIntent = new Intent(context, Login.class);
+            Intent authIntent = new Intent(context, LoginActivity.class);
             context.startActivity(authIntent);
             if (event != null) event.onError();
         }
@@ -66,7 +106,6 @@ public class AuthController {
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("Response", response);
                 try {
                     JSONObject result = new JSONObject(response);
                     if(result.getInt("error") == 0) {
@@ -92,6 +131,39 @@ public class AuthController {
 
         request.request(responseListener, errorListener, CustomRequest.Entity.USER,
                 "check_auth", args);
+    }
+
+    private void auth(HashMap<String, String> args, Event event) {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject result = new JSONObject(response);
+                    if(result.getInt("error") == 0) {
+                        AppSettings appSettings = new AppSettings(context);
+                        authUser = new UserModel.User(result.getJSONObject("user"));
+                        appSettings.addProperty("token", result.getJSONObject("user").getString("app_token"));
+                        if(event != null) event.onSuccess();
+                    } else {
+                        if(event != null) event.onError();
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                    if(event != null) event.onError();
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                if(event != null) event.onError();
+            }
+        };
+
+        request.request(responseListener, errorListener, CustomRequest.Entity.USER,
+                "auth", args);
     }
 
     public interface Event {
