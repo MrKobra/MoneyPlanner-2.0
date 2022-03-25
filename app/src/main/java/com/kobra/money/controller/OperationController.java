@@ -35,16 +35,16 @@ public class OperationController {
         this.view = view;
     }
 
-    public void setItems(HashMap<String, String> args) {
+    public void setItems(HashMap<String, String> args, OperationModel.Event event) {
         if(model.isRunning()) {
             modelRequestQueue.add(new ModelRequest() {
                 @Override
                 public void request() {
-                    model.setList(args, request, null);
+                    model.setList(args, request, event);
                 }
             });
         } else {
-            model.setList(args, request, null);
+            model.setList(args, request, event);
         }
     }
 

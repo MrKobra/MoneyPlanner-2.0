@@ -4,10 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/drawable/border.xml" value="0.19166666666666668" />
+        <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/drawable/cursor.xml" value="0.19166666666666668" />
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/activity_login.xml" value="0.2742123687281214" />
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/form_login.xml" value="0.22" />
-        <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/fragment_home.xml" value="0.39323220536756126" />
+        <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/item_operation.xml" value="0.35857805255023184" />
       </map>
     </option>

@@ -9,7 +9,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="false">
 
         <LinearLayout
             style="@style/Theme.MoneyPlanner.ContainerContent"
@@ -85,5 +85,19 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/loader"
+        style="@style/Theme.MoneyPlanner.BackgroundContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            style="@style/Theme.MoneyPlanner.ProgressLoader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>
