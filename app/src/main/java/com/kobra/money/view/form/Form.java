@@ -90,16 +90,23 @@ public abstract class Form {
     }
 
     public static class FormField {
-        private final EditText edit;
-        private final String type;
-        private final String name;
+        private String value;
+        private String type;
+        private String name;
         private boolean required;
 
-        public FormField(@NonNull EditText edit, String type, String name) {
-            this.edit = edit;
+        public FormField(String type, String name) {
             this.type = type;
             this.name = name;
             required = true;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
         }
 
         public boolean isRequired() {
@@ -108,10 +115,6 @@ public abstract class Form {
 
         public void setRequired(boolean required) {
             this.required = required;
-        }
-
-        public EditText getEdit() {
-            return edit;
         }
 
         public String getType() {

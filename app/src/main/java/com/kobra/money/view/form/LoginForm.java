@@ -2,6 +2,7 @@ package com.kobra.money.view.form;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.EditText;
 
 import com.kobra.money.R;
 import com.kobra.money.controller.AuthController;
@@ -21,6 +22,7 @@ public class LoginForm extends Form {
 
     @Override
     public void submit() {
+        getFormFieldsValue();
         UserException exception = checkFields();
         if(exception.getCode() == 0) {
             if(submitEvent != null) submitEvent.onSuccess();
@@ -31,10 +33,8 @@ public class LoginForm extends Form {
 
     private void initFields() {
         if(formView != null) {
-            formFields.add(new FormField(formView.findViewById(R.id.editUsername), "username",
-                    "username"));
-            formFields.add(new FormField(formView.findViewById(R.id.editPassword), "password",
-                    "password"));
+            formFields.add(new FormField("username","username"));
+            formFields.add(new FormField("password","password"));
         }
     }
 
@@ -49,6 +49,21 @@ public class LoginForm extends Form {
         }
 
         return exception;
+    }
+
+    private void getFormFieldsValue() {
+        for(FormField field : formFields) {
+            switch (field.getName()) {
+                case "username":
+                    EditText username = formView.findViewById(R.id.editUsername);
+                    if(username != null) field.setValue(username.getText().toString());
+                    break;
+                case "password":
+                    EditText password = formView.findViewById(R.id.editPassword);
+                    if(password != null) field.setValue(password.getText().toString());
+                    break;
+            }
+        }
     }
 
     public static class Builder extends Form.Builder {

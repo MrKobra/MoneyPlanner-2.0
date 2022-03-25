@@ -44,7 +44,7 @@ public class AuthController {
 
                 HashMap<String, String> args = new HashMap<String, String>() {{
                    for (Form.FormField field : loginForm.getFormFields()) {
-                       put(field.getName(), field.getEdit().getText().toString());
+                       put(field.getName(), field.getValue());
                    }
                 }};
                 auth(args, new Event() {
