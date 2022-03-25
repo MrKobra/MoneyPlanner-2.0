@@ -7,6 +7,8 @@ public class Loader {
     private int controlValue;
     private int currentValue;
 
+    private Event event;
+
     public Loader(int controlValue) {
         this.controlValue = controlValue;
         currentValue = 0;
@@ -14,6 +16,10 @@ public class Loader {
 
     public void setLoaderView(View loaderView) {
         this.loaderView = loaderView;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public void add(int value) {
@@ -35,9 +41,15 @@ public class Loader {
 
     public void checkControlValue() {
        if(currentValue >= controlValue) {
-           hide();
-       } else {
-           show();
+            if(event != null) event.onLoad();
        }
+    }
+
+    public boolean isLoad() {
+        return currentValue >= controlValue;
+    }
+
+    public interface Event {
+        void onLoad();
     }
 }

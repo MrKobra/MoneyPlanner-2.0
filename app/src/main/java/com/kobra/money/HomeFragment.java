@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,10 +34,18 @@ public class HomeFragment extends Fragment {
 
     private Loader loader;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private OperationController operationController;
 
     public HomeFragment() {
         loader = new Loader(1);
+        loader.setEvent(new Loader.Event() {
+            @Override
+            public void onLoad() {
+                loader.hide();
+            }
+        });
     }
 
     public static HomeFragment newInstance() {
@@ -78,7 +87,11 @@ public class HomeFragment extends Fragment {
         fragment = inflater.inflate(R.layout.fragment_home, container, false);
 
         loader.setLoaderView(fragment.findViewById(R.id.loader));
-        loader.checkControlValue();
+        if(!loader.isLoad()) {
+            loader.show();
+        }
+
+        swipeRefreshLayout = fragment.findViewById(R.id.swipeRefresh);
 
         OperationView operationView = new OperationView(context, fragment.findViewById(R.id.operationsList),
                 new ListOperationAdapter(context));
@@ -92,6 +105,32 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                update();
+            }
+        });
+    }
 
+    public void update() {
+        Loader updateLoader = new Loader(1);
+        updateLoader.setEvent(new Loader.Event() {
+            @Override
+            public void onLoad() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        operationController.update(new OperationModel.Event() {
+            @Override
+            public void onSuccess() {
+                updateLoader.add(1);
+            }
+
+            @Override
+            public void onError() {
+                updateLoader.add(1);
+            }
+        });
     }
 }

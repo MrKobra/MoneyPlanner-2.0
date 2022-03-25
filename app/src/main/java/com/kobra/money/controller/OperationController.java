@@ -65,18 +65,19 @@ public class OperationController {
         }
     }
 
-    public void update() {
-        OperationModel.Event event = new OperationModel.Event() {
+    public void update(OperationModel.Event event) {
+        OperationModel.Event updateEvent = new OperationModel.Event() {
             @Override
             public void onSuccess() {
                 if(view != null) {
                     view.update();
                 }
+                if(event != null) event.onSuccess();
             }
 
             @Override
             public void onError() {
-
+                if(event != null) event.onError();
             }
         };
 
@@ -84,11 +85,11 @@ public class OperationController {
             modelRequestQueue.add(new ModelRequest() {
                 @Override
                 public void request() {
-                    model.update(request, event);
+                    model.update(request, updateEvent);
                 }
             });
         } else {
-            model.update(request, event);
+            model.update(request, updateEvent);
         }
     }
 
