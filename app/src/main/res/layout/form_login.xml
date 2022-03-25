@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -33,13 +33,14 @@
                 android:id="@+id/editUsername"
                 style="@style/Theme.MoneyPlanner.EditText"
                 android:backgroundTint="@color/normal"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textCursorDrawable="@drawable/cursor" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="vertical">
 
@@ -55,11 +56,12 @@
                 style="@style/Theme.MoneyPlanner.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textCursorDrawable="@drawable/cursor" />
         </LinearLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/submitButton"
             style="@style/Theme.MoneyPlanner.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,5 +69,19 @@
             android:text="@string/login_button" />
 
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/formLoader"
+        style="@style/Theme.MoneyPlanner.FormLoader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Theme.MoneyPlanner.ProgressLoader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </androidx.cardview.widget.CardView>
 
 </androidx.cardview.widget.CardView>

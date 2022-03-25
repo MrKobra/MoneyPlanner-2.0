@@ -48,6 +48,9 @@
         <item name="android:textSize">14sp</item>
         <item name="android:background">@drawable/border</item>
         <item name="android:backgroundTint">@color/normal</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingLeft">15dp</item>
     </style>
 
     <style name="Theme.MoneyPlanner.EditTextLabel">
@@ -64,5 +67,17 @@
         <item name="android:backgroundTint">@color/normal</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:minHeight">55dp</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.FormLoader">
+        <item name="cardBackgroundColor">@color/background_content</item>
+        <item name="android:alpha">0.8</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="Theme.MoneyPlanner.ProgressLoader">
+        <item name="android:indeterminateTint">@color/normal</item>
+        <item name="android:indeterminateTintMode">src_atop</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
     </style>
 </resources>
