@@ -6,15 +6,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.kobra.money.controller.AuthController;
 import com.kobra.money.controller.OperationController;
 import com.kobra.money.view.OperationView;
 import com.kobra.money.view.adapter.ListOperationAdapter;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +51,8 @@ public class HomeFragment extends Fragment {
         this.context = context;
         operationController = new OperationController(context);
         operationController.setItems(new HashMap<String, String>(){{
+            put("user_id", Long.toString(AuthController.authUser.getId()));
+            put("limit", "3");
             put("include_category", "1");
             put("include_type", "1");
         }});
