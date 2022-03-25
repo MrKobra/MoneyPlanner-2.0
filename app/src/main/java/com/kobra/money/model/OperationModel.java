@@ -74,11 +74,9 @@ public class OperationModel {
 
     public void update(CustomRequest request, Event event) {
         setRunning(true);
-        Log.i("Response", "update");
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("Response", response);
                 try {
                     JSONObject result = new JSONObject(response);
                     if(result.getInt("error") == 0) {
