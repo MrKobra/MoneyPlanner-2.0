@@ -93,7 +93,7 @@ public class CategoryTable {
                 if(select) {
                     categoryIcon.setCardBackgroundColor(context.getColor(R.color.active));
                 } else {
-                    categoryIcon.setCardBackgroundColor(context.getColor(R.color.main));
+                    categoryIcon.setCardBackgroundColor(context.getColor(R.color.normal));
                 }
             }
         }
