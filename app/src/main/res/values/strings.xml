@@ -5,9 +5,11 @@
     <string name="last_operation_heading">Последние операции</string>
     <string name="authorization_heading">Авторизация</string>
     <string name="add_operation_heading">Добавить операцию</string>
+    <string name="select_category_heading">Выбор категории</string>
 
     <!-- Уведомления -->
     <string name="empty_operation">Последних операций не найдено.\nДобавьте свою первую операцию прямо сейчас!</string>
+    <string name="category_not_selected">Выберите категорию</string>
 
     <!-- Названия полей -->
     <string name="username_field">Имя пользователя</string>
@@ -17,6 +19,7 @@
     <!-- Названия кнопок -->
     <string name="login_button">Войти</string>
     <string name="add_operation">Добавить</string>
+    <string name="select_category_button">Выбрать</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
