@@ -9,6 +9,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 
 import com.kobra.money.R;
 import com.kobra.money.model.CategoryModel;
@@ -84,6 +85,17 @@ public class CategoryTable {
 
         public CategoryModel.Category getCategory() {
             return category;
+        }
+
+        public void setSelectedView(boolean select) {
+            CardView categoryIcon = (CardView) view.findViewById(R.id.categoryIcon);
+            if(categoryIcon != null) {
+                if(select) {
+                    categoryIcon.setCardBackgroundColor(context.getColor(R.color.active));
+                } else {
+                    categoryIcon.setCardBackgroundColor(context.getColor(R.color.main));
+                }
+            }
         }
 
         private void generateView() {

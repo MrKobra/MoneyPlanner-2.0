@@ -98,6 +98,7 @@ public abstract class Form {
         public FormField(String type, String name) {
             this.type = type;
             this.name = name;
+            value = "";
             required = true;
         }
 

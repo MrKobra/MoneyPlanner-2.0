@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.kobra.money.R;
+import com.kobra.money.include.Finder;
 import com.kobra.money.model.CategoryModel;
 import com.kobra.money.view.form.Form;
 import com.kobra.money.view.form.LoginForm;
@@ -34,6 +35,34 @@ public class AddOperationForm extends Form {
         if(categoryTable != null) {
             categoryTable.setCategories(categories);
             categoryTable.print(10);
+            selectCategory();
+        }
+    }
+
+    private void selectCategory() {
+        List<CategoryTable.CategoryTableItem> categoryTableItems = categoryTable.getCategoryItems();
+        if(categoryTableItems != null && categoryTableItems.size() > 0) {
+            FormField field = formFields.get(Finder.searchByFieldName("category_id", formFields));
+            for(CategoryTable.CategoryTableItem categoryTableItem : categoryTableItems) {
+                categoryTableItem.getView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        long categoryId = Long.parseLong(field.getValue());
+                        CategoryModel.Category clickCategory = categoryTableItem.getCategory();
+
+                        for(CategoryTable.CategoryTableItem categoryTableItem : categoryTableItems) {
+                            categoryTableItem.setSelectedView(false);
+                        }
+
+                        if(clickCategory.getId() == categoryId) {
+                            field.setValue("");
+                        } else {
+                            field.setValue(Long.toString(clickCategory.getId()));
+                            categoryTableItem.setSelectedView(true);
+                        }
+                    }
+                });
+            }
         }
     }
 
