@@ -2,11 +2,15 @@ package com.kobra.money.view.form.add;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -16,14 +20,20 @@ import com.kobra.money.model.CategoryModel;
 import com.kobra.money.view.dialog.SelectCategoryDialog;
 import com.kobra.money.view.form.Form;
 import com.kobra.money.view.form.LoginForm;
+import com.kobra.money.view.input.AmountEditText;
 import com.kobra.money.view.table.CategoryTable;
 
+import org.w3c.dom.Text;
+
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class AddOperationForm extends Form {
     private CategoryTable categoryTable;
     private LinearLayout selectCategoryButton;
     private SelectCategoryDialog selectCategoryDialog;
+    private AmountEditText amountEdit;
 
     private AddOperationForm(Context context) {
         super(context);
@@ -36,11 +46,12 @@ public class AddOperationForm extends Form {
     }
 
     @Override
-    public void setFormView(View formView) {
+    public void setFormView(@NonNull View formView) {
         super.setFormView(formView);
         categoryTable = new CategoryTable(context, formView.findViewById(R.id.categoryTable));
         initFields();
         initSelectCategoryButton();
+        amountEdit = new AmountEditText(formView.findViewById(R.id.editAmount));
     }
 
     public void setCategories(List<CategoryModel.Category> categories) {
