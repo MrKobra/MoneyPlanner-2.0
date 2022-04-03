@@ -11,5 +11,19 @@ public abstract class CustomEditText {
         this.editText = editText;
     }
 
+    public CustomEditText() {
+        editText = null;
+    }
+
+    public void setEditText(EditText editText) {
+        this.editText = editText;
+    }
+
+    public EditText getEditText() {
+        return editText;
+    }
+
     public abstract String getValue();
+
+    public abstract void setValue(String value);
 }
