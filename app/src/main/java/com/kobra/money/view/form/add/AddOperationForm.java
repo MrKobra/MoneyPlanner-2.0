@@ -3,12 +3,14 @@ package com.kobra.money.view.form.add;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.kobra.money.R;
 import com.kobra.money.include.Finder;
 import com.kobra.money.model.CategoryModel;
+import com.kobra.money.view.dialog.EditTextDialog;
 import com.kobra.money.view.dialog.SelectCategoryDialog;
 import com.kobra.money.view.form.Form;
 import com.kobra.money.view.form.LoginForm;
@@ -35,9 +38,12 @@ public class AddOperationForm extends Form {
     private SelectCategoryDialog selectCategoryDialog;
     private AmountEditText amountEdit;
 
+    private EditTextDialog amountEditDialog;
+
     private AddOperationForm(Context context) {
         super(context);
         initSelectCategoryDialog();
+        initAmountEditDialog();
     }
 
     @Override
@@ -52,6 +58,12 @@ public class AddOperationForm extends Form {
         initFields();
         initSelectCategoryButton();
         amountEdit = new AmountEditText(formView.findViewById(R.id.editAmount));
+        amountEdit.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                amountEditDialog.show();
+            }
+        });
     }
 
     public void setCategories(List<CategoryModel.Category> categories) {
@@ -149,6 +161,20 @@ public class AddOperationForm extends Form {
                 } else {
                     categoryIcon.setCardBackgroundColor(context.getColor(R.color.normal));
                 }
+            }
+        });
+    }
+
+    private void initAmountEditDialog() {
+        amountEditDialog = new EditTextDialog(context);
+        amountEditDialog.setDialogTitle(context.getString(R.string.amount_field));
+        amountEditDialog.setEditText(new AmountEditText());
+        amountEditDialog.setHintText(context.getString(R.string.amount_field));
+        amountEditDialog.setEditTextType(InputType.TYPE_CLASS_NUMBER);
+        amountEditDialog.setEvent(new EditTextDialog.Event() {
+            @Override
+            public void onSuccess(String value) {
+                amountEdit.setValue(value);
             }
         });
     }
