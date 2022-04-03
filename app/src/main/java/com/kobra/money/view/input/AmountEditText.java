@@ -18,14 +18,36 @@ public class AmountEditText extends CustomEditText implements TextWatcher {
     private int separatorCount;
 
     public AmountEditText(EditText editText) {
-        super(editText);
+        super();
+        setEditText(editText);
         separatorCount = 0;
+    }
+
+    public AmountEditText() {
+        super();
+        separatorCount = 0;
+    }
+
+    @Override
+    public void setEditText(EditText editText) {
+        super.setEditText(editText);
         editText.addTextChangedListener(this);
     }
 
     @Override
     public String getValue() {
         return getValue(editText.getText());
+    }
+
+    @Override
+    public void setValue(String value) {
+        String amountStr = value.replace(separator, "").replace(currency, "");
+        if(amountStr.length() > 0) {
+            amountStr = NumberFormat.getNumberInstance(Locale.US).format(Long.parseLong(amountStr)).replace(",", separator) + " " + currency;
+            editText.setText(amountStr);
+        } else {
+            editText.setText("");
+        }
     }
 
     @Override
