@@ -7,21 +7,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.kobra.money.controller.AuthController;
+import com.kobra.money.controller.Controller;
 import com.kobra.money.controller.OperationController;
-import com.kobra.money.model.OperationModel;
 import com.kobra.money.view.Loader;
 import com.kobra.money.view.OperationView;
 import com.kobra.money.view.adapter.ListOperationAdapter;
 
-import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,23 +59,6 @@ public class HomeFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        operationController = new OperationController(context);
-        operationController.setItems(new HashMap<String, String>() {{
-            put("user_id", Long.toString(AuthController.authUser.getId()));
-            put("limit", "3");
-            put("include_category", "1");
-            put("include_type", "1");
-        }}, new OperationModel.Event() {
-            @Override
-            public void onSuccess() {
-                loader.add(1);
-            }
-
-            @Override
-            public void onError() {
-                loader.add(1);
-            }
-        });
     }
 
     @Override
@@ -93,10 +73,39 @@ public class HomeFragment extends Fragment {
 
         swipeRefreshLayout = fragment.findViewById(R.id.swipeRefresh);
 
-        OperationView operationView = new OperationView(context, fragment.findViewById(R.id.operationsList),
-                new ListOperationAdapter(context));
+        OperationView operationView = new OperationView(context,
+                fragment.findViewById(R.id.operationsList), new ListOperationAdapter(context));
         operationView.setEmptyNotify(fragment.findViewById(R.id.emptyOperation));
-        operationController.setView(operationView);
+
+        operationController = new OperationController.Builder(context)
+                .setViewOption(operationView)
+                .setAddOption(fragment.findViewById(R.id.formAddOperation))
+                .getController();
+
+        HashMap<String, String> operationArgs = new HashMap<String, String>() {{
+            put("user_id", Long.toString(AuthController.authUser.getId()));
+            put("limit", "3");
+            put("include_category", "1");
+            put("include_type", "1");
+        }};
+        HashMap<String, String> categoryArgs = new HashMap<String, String>() {{
+            put("limit", "16");
+        }};
+
+        operationController.setOperations(operationArgs, new Controller.Event() {
+            @Override
+            public void onSuccess() {
+                loader.add(1);
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+
+        operationController.setCategories(categoryArgs, null);
+
         operationController.print();
 
         return fragment;
@@ -121,14 +130,14 @@ public class HomeFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        operationController.update(new OperationModel.Event() {
+        operationController.update(new Controller.Event() {
             @Override
             public void onSuccess() {
                 updateLoader.add(1);
             }
 
             @Override
-            public void onError() {
+            public void onError(String error) {
                 updateLoader.add(1);
             }
         });

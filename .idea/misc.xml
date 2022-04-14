@@ -7,8 +7,10 @@
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/drawable/cursor.xml" value="0.19166666666666668" />
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/activity_login.xml" value="0.2742123687281214" />
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/form_add_operation.xml" value="0.16666666666666666" />
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/form_login.xml" value="0.22" />
-        <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/fragment_home.xml" value="0.3333333333333333" />
+        <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/item_category_circle.xml" value="0.6" />
         <entry key="..\:/Project/MoneyPlanner-2.0/app/src/main/res/layout/item_operation.xml" value="0.35857805255023184" />
       </map>
     </option>

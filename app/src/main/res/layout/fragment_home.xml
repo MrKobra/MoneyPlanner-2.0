@@ -14,7 +14,9 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="false">
+            android:fillViewport="false"
+            android:paddingTop="20dp"
+            android:paddingBottom="15dp">
 
             <LinearLayout
                 style="@style/Theme.MoneyPlanner.ContainerContent"
@@ -22,10 +24,42 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <androidx.cardview.widget.CardView
+                    style="@style/Theme.MoneyPlanner.BackgroundContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            style="@style/Theme.MoneyPlanner.Heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_operation_heading"
+                            android:textAllCaps="false" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <include
+                    layout="@layout/form_add_operation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
                     android:id="@+id/lastOperationContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView

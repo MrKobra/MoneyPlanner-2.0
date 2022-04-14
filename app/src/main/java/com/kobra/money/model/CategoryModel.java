@@ -2,88 +2,202 @@ package com.kobra.money.model;
 
 import android.content.Context;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.kobra.money.R;
+import com.kobra.money.entity.Category;
+import com.kobra.money.request.CustomRequest;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CategoryModel {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-    public static class Category {
-        private long id;
-        private long user_id;
-        private long type_id;
-        private String title;
-        private String slug;
-        private String icon;
-        private boolean delete;
+public class CategoryModel extends Model {
+    private HashMap<String, String> args;
 
-        public Category(JSONObject item) throws JSONException {
-            id = item.getLong("id");
-            user_id = item.getLong("user_id");
-            type_id = item.getLong("type_id");
-            title = item.getString("title");
-            slug = item.getString("slug");
-            icon = item.getString("icon");
-            delete = item.getInt("is_delete") > 0;
+    public CategoryModel(Context context) {
+        super(context);
+    }
+
+    public void getItemsFromHTTP(HashMap<String, String> args, CustomRequest request,
+                                 GetEvent<Category> event) {
+        setRun(true);
+        this.args = args;
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject result = new JSONObject(response);
+                    if(result.getInt("error") == 0) {
+                        JSONArray items = result.getJSONArray("items");
+                        if(event != null) event.onSuccess(getCategoryList(items));
+                    } else {
+                        if(event != null) event.onError(context.getString(R.string.get_error));
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                    if(event != null) event.onError(context.getString(R.string.get_error));
+                }
+
+                setRun(false);
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                if(event != null) event.onError(context.getString(R.string.network_error));
+                setRun(false);
+            }
+        };
+
+        request.request(responseListener, errorListener, CustomRequest.Entity.CATEGORY,
+                "get", args);
+    }
+
+    private List<Category> getCategoryList(JSONArray items) {
+        List<Category> categories = new ArrayList<Category>();
+        for (int i = 0; i < items.length(); i++) {
+            try {
+                JSONObject item = items.getJSONObject(i);
+                Category category = new Category(item);
+                categories.add(category);
+            }
+            catch (JSONException exception) {
+                exception.printStackTrace();
+            }
         }
+        return categories;
+    }
 
-        public long getId() {
-            return id;
-        }
+    /*
+    private List<Category> list;
+    private boolean running;
+    private AddOperationController.Event event;
+    private HashMap<String, String> queryArgs;
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public CategoryModel(AddOperationController.Event event) {
+        this.event = event;
+        list = new ArrayList<>();
+        running = false;
+    }
 
-        public long getUser_id() {
-            return user_id;
-        }
+    public void setList(JSONArray items) {
+        list.clear();
+        add(items);
+    }
 
-        public void setUser_id(long user_id) {
-            this.user_id = user_id;
-        }
+    public void setList(HashMap<String, String> args, CustomRequest request, Event event) {
+        setRunning(true);
 
-        public long getType_id() {
-            return type_id;
-        }
+        queryArgs = args;
 
-        public void setType_id(long type_id) {
-            this.type_id = type_id;
-        }
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject result = new JSONObject(response);
+                    if(result.getInt("error") == 0) {
+                        JSONArray items = result.getJSONArray("items");
+                        setList(items);
+                        if(event != null) event.onSuccess();
+                    } else {
+                        if(event != null) event.onError();
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                    if(event != null) event.onError();
+                }
 
-        public String getTitle() {
-            return title;
-        }
+                setRunning(false);
+            }
+        };
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                if(event != null) event.onError();
+                setRunning(false);
+            }
+        };
 
-        public String getSlug() {
-            return slug;
-        }
+        request.request(responseListener, errorListener, CustomRequest.Entity.CATEGORY,
+                "get", args);
+    }
 
-        public void setSlug(String slug) {
-            this.slug = slug;
-        }
+    public void update(CustomRequest request, Event event) {
+        setRunning(true);
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject result = new JSONObject(response);
+                    if(result.getInt("error") == 0) {
+                        JSONArray items = result.getJSONArray("items");
+                        setList(items);
+                        if(event != null) event.onSuccess();
+                    } else {
+                        if(event != null) event.onError();
+                    }
+                } catch (JSONException exception) {
+                    exception.printStackTrace();
+                    if(event != null) event.onError();
+                }
 
-        public String getIcon() {
-            return icon;
-        }
+                setRunning(false);
+            }
+        };
 
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                if(event != null) event.onError();
+                setRunning(false);
+            }
+        };
 
-        public boolean isDelete() {
-            return delete;
-        }
+        request.request(responseListener, errorListener, CustomRequest.Entity.CATEGORY,
+                "get", queryArgs);
+    }
 
-        public void setDelete(boolean delete) {
-            this.delete = delete;
-        }
+    public boolean isRunning() {
+        return running;
+    }
 
-        public int getIconID(Context context) {
-            return context.getResources().getIdentifier(icon,"drawable", context.getPackageName());
+    public List<Category> getList() {
+        return list;
+    }
+
+    private void add(JSONArray items) {
+        for (int i = 0; i < items.length(); i++) {
+            try {
+                JSONObject item = items.getJSONObject(i);
+                Category category = new Category(item);
+                list.add(category);
+            }
+            catch (JSONException exception) {
+                exception.printStackTrace();
+            }
         }
     }
+
+    private void setRunning(boolean flag) {
+        running = flag;
+        if(!isRunning()) {
+            event.onReady();
+        }
+    }
+
+    public interface Event {
+        void onSuccess();
+        void onError();
+    } */
 }

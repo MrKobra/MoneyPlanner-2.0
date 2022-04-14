@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.kobra.money.entity.User;
 import com.kobra.money.request.CustomRequest;
 
 import org.json.JSONArray;
@@ -25,7 +26,7 @@ public class UserModel {
         return user;
     }
 
-    public void setUser(HashMap<String, String> args, CustomRequest request, OperationModel.Event event) {
+    public void setUser(HashMap<String, String> args, CustomRequest request, Event event) {
         setRunning(true);
         user = null;
 
@@ -74,61 +75,5 @@ public class UserModel {
     public interface Event {
         void onSuccess();
         void onError();
-    }
-
-    public static class User {
-        private long id;
-        private String username;
-        private String name;
-        private String password;
-        private String email;
-
-        public User(JSONObject item) throws JSONException {
-            id = item.getLong("id");
-            username = item.getString("username");
-            name = item.getString("name");
-            password = item.getString("password");
-            email = item.getString("email");
-        }
-
-        public long getId() {
-            return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
     }
 }

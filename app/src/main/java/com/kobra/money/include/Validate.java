@@ -13,17 +13,26 @@ public class Validate {
 
     public static UserException validateFormField(Form.FormField formField) {
         UserException userException = new UserException();
-        EditText editText = formField.getEdit();
 
         switch (formField.getType()) {
             case "username":
-                if(formField.getEdit().length() < minUsernameLength) {
+                if(formField.getValue().length() < minUsernameLength) {
                     userException.setCode(1);
                 }
                 break;
             case "password":
-                if(formField.getEdit().length() < minPasswordLength) {
+                if(formField.getValue().length() < minPasswordLength) {
                     userException.setCode(2);
+                }
+                break;
+            case "category":
+                if(formField.getValue().length() == 0 || formField.getValue().equals("0")) {
+                    userException.setCode(6);
+                }
+                break;
+            case "amount":
+                if(formField.getValue().length() == 0 || formField.getValue().equals("0")) {
+                    userException.setCode(5);
                 }
                 break;
         }

@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kobra.money.R;
+import com.kobra.money.entity.Category;
+import com.kobra.money.entity.Operation;
+import com.kobra.money.entity.Type;
 import com.kobra.money.include.FormatStr;
 import com.kobra.money.model.CategoryModel;
 import com.kobra.money.model.OperationModel;
@@ -21,9 +24,9 @@ import java.util.List;
 
 public class ListOperationAdapter extends RecyclerView.Adapter<ListOperationAdapter.OperationViewHolder> implements OperationAdapter {
     private Context context;
-    private List<OperationModel.Operation> operations;
+    private List<Operation> operations;
 
-    public ListOperationAdapter(Context context, List<OperationModel.Operation> operations) {
+    public ListOperationAdapter(Context context, List<Operation> operations) {
         this.operations = operations;
         this.context = context;
     }
@@ -34,7 +37,7 @@ public class ListOperationAdapter extends RecyclerView.Adapter<ListOperationAdap
     }
 
     @Override
-    public void setItems(List<OperationModel.Operation> items) {
+    public void setItems(List<Operation> items) {
         operations = items;
     }
 
@@ -47,9 +50,9 @@ public class ListOperationAdapter extends RecyclerView.Adapter<ListOperationAdap
 
     @Override
     public void onBindViewHolder(@NonNull OperationViewHolder holder, int position) {
-        OperationModel.Operation operation = operations.get(position);
-        CategoryModel.Category category = operation.getCategory();
-        TypeModel.Type type = operation.getType();
+        Operation operation = operations.get(position);
+        Category category = operation.getCategory();
+        Type type = operation.getType();
 
         holder.amount.setText(FormatStr.getAmount(operation.getAmount()));
         holder.date.setText(FormatStr.getDate(operation.getDate()));

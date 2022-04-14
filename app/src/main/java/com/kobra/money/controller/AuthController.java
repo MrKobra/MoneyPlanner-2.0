@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.kobra.money.LoginActivity;
 import com.kobra.money.MainActivity;
+import com.kobra.money.entity.User;
 import com.kobra.money.include.AppSettings;
 import com.kobra.money.include.UserException;
 import com.kobra.money.model.UserModel;
@@ -28,26 +29,21 @@ public class AuthController {
 
     private LoginForm loginForm;
 
-    public static UserModel.User authUser;
+    public static User authUser;
 
     public AuthController(Context context) {
         this.context = context;
-        request = new CustomRequest(Volley.newRequestQueue(context));
+        request = new CustomRequest(context);
     }
 
     public void setLoginForm(LoginForm loginForm) {
         this.loginForm = loginForm;
-        loginForm.setSubmitEvent(new Form.Event() {
+        loginForm.setSubmitEvent(new Form.Submit() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(HashMap<String, String> fields) {
                 loginForm.showFormLoader();
 
-                HashMap<String, String> args = new HashMap<String, String>() {{
-                   for (Form.FormField field : loginForm.getFormFields()) {
-                       put(field.getName(), field.getEdit().getText().toString());
-                   }
-                }};
-                auth(args, new Event() {
+                auth(fields, new Event() {
                     @Override
                     public void onSuccess() {
                         loginForm.hideFormLoader();
@@ -109,7 +105,7 @@ public class AuthController {
                 try {
                     JSONObject result = new JSONObject(response);
                     if(result.getInt("error") == 0) {
-                        authUser = new UserModel.User(result.getJSONObject("user"));
+                        authUser = new User(result.getJSONObject("user"));
                         if(event != null) event.onSuccess();
                     } else {
                         if(event != null) event.onError();
@@ -141,7 +137,7 @@ public class AuthController {
                     JSONObject result = new JSONObject(response);
                     if(result.getInt("error") == 0) {
                         AppSettings appSettings = new AppSettings(context);
-                        authUser = new UserModel.User(result.getJSONObject("user"));
+                        authUser = new User(result.getJSONObject("user"));
                         appSettings.addProperty("token", result.getJSONObject("user").getString("app_token"));
                         if(event != null) event.onSuccess();
                     } else {

@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kobra.money.entity.Operation;
 import com.kobra.money.model.OperationModel;
 import com.kobra.money.view.adapter.ListOperationAdapter;
 import com.kobra.money.view.adapter.OperationAdapter;
@@ -19,7 +20,7 @@ public class OperationView extends ViewModel {
 
     private RecyclerView recyclerView;
     private OperationAdapter adapter;
-    private List<OperationModel.Operation> operations;
+    private List<Operation> operations;
 
     private CardView emptyNotify;
 
@@ -30,7 +31,7 @@ public class OperationView extends ViewModel {
         init();
     }
 
-    public void setOperations(List<OperationModel.Operation> operations) {
+    public void setOperations(List<Operation> operations) {
         this.operations = operations;
     }
 
