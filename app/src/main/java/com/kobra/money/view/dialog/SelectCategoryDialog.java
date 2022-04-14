@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 
 import com.kobra.money.R;
+import com.kobra.money.entity.Category;
 import com.kobra.money.include.Finder;
 import com.kobra.money.model.CategoryModel;
 import com.kobra.money.view.form.Form;
@@ -31,7 +32,7 @@ public class SelectCategoryDialog extends FullscreenDialog {
         setAcceptOnClickListener();
     }
 
-    public void setCategories(List<CategoryModel.Category> categories) {
+    public void setCategories(List<Category> categories) {
         categoryTable.setCategories(categories);
         categoryTable.print(10);
         selectCategory();
@@ -52,7 +53,7 @@ public class SelectCategoryDialog extends FullscreenDialog {
                 categoryTableItem.getView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        CategoryModel.Category clickCategory = categoryTableItem.getCategory();
+                        Category clickCategory = categoryTableItem.getCategory();
 
                         if(multiple) {
 

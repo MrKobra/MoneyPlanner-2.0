@@ -1,5 +1,6 @@
 package com.kobra.money.request;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.kobra.money.include.Config;
 
 import java.util.HashMap;
@@ -16,8 +18,8 @@ import java.util.Map;
 public class CustomRequest {
     private RequestQueue requestQueue;
 
-    public CustomRequest(RequestQueue requestQueue) {
-        this.requestQueue = requestQueue;
+    public CustomRequest(Context context) {
+        this.requestQueue = Volley.newRequestQueue(context);
     }
 
     public void request(Response.Listener<String> responseListener,

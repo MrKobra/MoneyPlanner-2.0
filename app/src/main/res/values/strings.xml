@@ -21,6 +21,10 @@
     <string name="add_operation">Добавить</string>
     <string name="select_category_button">Выбрать</string>
 
+    <!-- Ошибки -->
+    <string name="network_error">Ошибка соединения с сервером</string>
+    <string name="get_error">При получении данных произошла ошибка</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

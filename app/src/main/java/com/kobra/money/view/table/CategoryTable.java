@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import com.kobra.money.R;
+import com.kobra.money.entity.Category;
 import com.kobra.money.model.CategoryModel;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
 public class CategoryTable {
     private Context context;
     private CustomTable table;
-    private List<CategoryModel.Category> categories;
+    private List<Category> categories;
     private List<CategoryTableItem> categoryItems;
 
     public CategoryTable(Context context, TableLayout table) {
@@ -29,7 +30,7 @@ public class CategoryTable {
         categoryItems = new ArrayList<>();
     }
 
-    public void setCategories(List<CategoryModel.Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
         generateCategoryTableItems();
     }
@@ -50,7 +51,7 @@ public class CategoryTable {
         categoryItems.clear();
 
         if(categories != null && categories.size() > 0) {
-            for(CategoryModel.Category category : categories) {
+            for(Category category : categories) {
                 categoryItems.add(new CategoryTableItem(context, category));
             }
         }
@@ -71,9 +72,9 @@ public class CategoryTable {
     public static class CategoryTableItem {
         private Context context;
         private View view;
-        private CategoryModel.Category category;
+        private Category category;
 
-        public CategoryTableItem(@NonNull Context context, @NonNull CategoryModel.Category category) {
+        public CategoryTableItem(@NonNull Context context, @NonNull Category category) {
             this.context = context;
             this.category = category;
             generateView();
@@ -83,7 +84,7 @@ public class CategoryTable {
             return view;
         }
 
-        public CategoryModel.Category getCategory() {
+        public Category getCategory() {
             return category;
         }
 

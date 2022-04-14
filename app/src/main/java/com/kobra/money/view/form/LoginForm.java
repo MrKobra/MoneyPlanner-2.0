@@ -25,10 +25,15 @@ public class LoginForm extends Form {
         getFormFieldsValue();
         UserException exception = checkFields();
         if(exception.getCode() == 0) {
-            if(submitEvent != null) submitEvent.onSuccess();
+            if(submitEvent != null) submitEvent.onSuccess(getFormValues());
         } else {
             if(submitEvent != null) submitEvent.onError(exception);
         }
+    }
+
+    @Override
+    public void resetForm() {
+
     }
 
     private void initFields() {

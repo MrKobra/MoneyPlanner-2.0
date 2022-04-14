@@ -17,7 +17,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.kobra.money.R;
+import com.kobra.money.entity.Category;
 import com.kobra.money.include.Finder;
+import com.kobra.money.include.UserException;
+import com.kobra.money.include.Validate;
 import com.kobra.money.model.CategoryModel;
 import com.kobra.money.view.dialog.EditTextDialog;
 import com.kobra.money.view.dialog.SelectCategoryDialog;
@@ -48,7 +51,31 @@ public class AddOperationForm extends Form {
 
     @Override
     public void submit() {
+        UserException exception;
+        for (FormField formField : formFields) {
+            if(formField.isRequired()) {
+                exception = Validate.validateFormField(formField);
+                if(exception.getCode() != 0) {
+                    submitEvent.onError(exception);
+                    return;
+                }
+            }
+        }
+        submitEvent.onSuccess(getFormValues());
+    }
 
+    @Override
+    public void resetForm() {
+        amountEdit.setValue("");
+        amountEditDialog.getEditText().setValue("");
+
+        for(CategoryTable.CategoryTableItem categoryTableItem : categoryTable.getCategoryItems()) {
+            categoryTableItem.setSelectedView(false);
+        }
+
+        for(FormField field : formFields) {
+            field.setValue("");
+        }
     }
 
     @Override
@@ -66,7 +93,7 @@ public class AddOperationForm extends Form {
         });
     }
 
-    public void setCategories(List<CategoryModel.Category> categories) {
+    public void setCategories(List<Category> categories) {
         if(categoryTable != null) {
             categoryTable.setCategories(categories.subList(0, 3));
             categoryTable.print(0);
@@ -84,7 +111,7 @@ public class AddOperationForm extends Form {
                     @Override
                     public void onClick(View view) {
                         long categoryId = (field.getValue().isEmpty()) ? 0 : Long.parseLong(field.getValue());
-                        CategoryModel.Category clickCategory = categoryTableItem.getCategory();
+                        Category clickCategory = categoryTableItem.getCategory();
 
                         for(CategoryTable.CategoryTableItem categoryTableItem : categoryTableItems) {
                             categoryTableItem.setSelectedView(false);
@@ -175,6 +202,9 @@ public class AddOperationForm extends Form {
             @Override
             public void onSuccess(String value) {
                 amountEdit.setValue(value);
+
+                FormField amountField = formFields.get(Finder.searchByFieldName("amount", formFields));
+                amountField.setValue(value);
             }
         });
     }

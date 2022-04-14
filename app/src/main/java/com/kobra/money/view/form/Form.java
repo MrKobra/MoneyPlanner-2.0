@@ -10,6 +10,7 @@ import com.kobra.money.R;
 import com.kobra.money.include.UserException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Form {
@@ -17,23 +18,18 @@ public abstract class Form {
     protected View formView;
     protected View submitButton;
 
-    protected Submit submitListener;
-    protected Event submitEvent;
+    protected Submit submitEvent;
 
     protected List<FormField> formFields;
 
     public Form(Context context) {
         this.context = context;
         formFields = new ArrayList<>();
-        submitListener = new Submit() {
-            @Override
-            public void onSubmit() {
-                submit();
-            }
-        };
     }
 
     public abstract void submit();
+
+    public abstract void resetForm();
 
     public void setFormView(View formView) {
         this.formView = formView;
@@ -41,12 +37,8 @@ public abstract class Form {
         setSubmitOnClickListener();
     }
 
-    public void setSubmitEvent(Event submitEvent) {
+    public void setSubmitEvent(Submit submitEvent) {
         this.submitEvent = submitEvent;
-    }
-
-    public void setSubmitListener(Submit submitListener) {
-        this.submitListener = submitListener;
     }
 
     public void setSubmitButton(View submitButton) {
@@ -76,14 +68,22 @@ public abstract class Form {
         }
     }
 
+    public HashMap<String, String> getFormValues() {
+        HashMap<String, String> formValues = new HashMap<>();
+        if(formFields != null && formFields.size() > 0) {
+            for (FormField field : formFields) {
+                formValues.put(field.getName(), field.getValue());
+            }
+        }
+        return formValues;
+    }
+
     protected void setSubmitOnClickListener() {
         if(submitButton != null) {
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(submitListener != null) {
-                        submitListener.onSubmit();
-                    }
+                    submit();
                 }
             });
         }
@@ -147,11 +147,7 @@ public abstract class Form {
     }
 
     public interface Submit {
-        void onSubmit();
-    }
-
-    public interface Event {
-        void onSuccess();
+        void onSuccess(HashMap<String, String> fieldsValue);
         void onError(UserException exception);
     }
 }

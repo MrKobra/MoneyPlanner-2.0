@@ -25,6 +25,16 @@ public class Validate {
                     userException.setCode(2);
                 }
                 break;
+            case "category":
+                if(formField.getValue().length() == 0 || formField.getValue().equals("0")) {
+                    userException.setCode(6);
+                }
+                break;
+            case "amount":
+                if(formField.getValue().length() == 0 || formField.getValue().equals("0")) {
+                    userException.setCode(5);
+                }
+                break;
         }
 
         return userException;

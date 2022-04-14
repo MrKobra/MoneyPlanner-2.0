@@ -57,6 +57,10 @@ public class EditTextDialog extends FullscreenDialog {
         }
     }
 
+    public CustomEditText getEditText() {
+        return editText;
+    }
+
     @Override
     public void show() {
         super.show();
