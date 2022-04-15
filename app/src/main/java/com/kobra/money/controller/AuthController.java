@@ -23,17 +23,13 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class AuthController {
-    private Context context;
-    private CustomRequest request;
-
+public class AuthController extends Controller {
     private LoginForm loginForm;
 
     public static User authUser;
 
     public AuthController(Context context) {
-        this.context = context;
-        request = new CustomRequest(context);
+        super(context);
     }
 
     public void setLoginForm(LoginForm loginForm) {
