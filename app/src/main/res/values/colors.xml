@@ -6,4 +6,5 @@
     <color name="active">#F18F01</color>
     <color name="background">#A9E4EF</color>
     <color name="background_content">#C6F1F9</color>
+    <color name="error">#FFB10101</color>
 </resources>

@@ -14,15 +14,20 @@ import androidx.cardview.widget.CardView;
 import com.kobra.money.R;
 import com.kobra.money.entity.Category;
 import com.kobra.money.model.CategoryModel;
+import com.kobra.money.view.FormFieldView;
+import com.kobra.money.view.form.Form;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
-public class CategoryTable {
+public class CategoryTable implements FormFieldView {
     private Context context;
     private CustomTable table;
     private List<Category> categories;
     private List<CategoryTableItem> categoryItems;
+
+    private List<String> selected;
 
     public CategoryTable(Context context, TableLayout table) {
         this.context = context;
@@ -67,6 +72,31 @@ public class CategoryTable {
         }
 
         return views;
+    }
+
+    @Override
+    public String getValue() {
+        return String.join(",", selected);
+    }
+
+    @Override
+    public void setValue(String value) {
+
+    }
+
+    @Override
+    public void setError(boolean error) {
+        if(error) {
+            for (CategoryTableItem tableItem : categoryItems) {
+                CardView categoryIcon = tableItem.getView().findViewById(R.id.categoryIcon);
+                categoryIcon.setCardBackgroundColor(context.getColor(R.color.error));
+            }
+        } else {
+            for (CategoryTableItem tableItem : categoryItems) {
+                CardView categoryIcon = tableItem.getView().findViewById(R.id.categoryIcon);
+                categoryIcon.setCardBackgroundColor(context.getColor(R.color.normal));
+            }
+        }
     }
 
     public static class CategoryTableItem {

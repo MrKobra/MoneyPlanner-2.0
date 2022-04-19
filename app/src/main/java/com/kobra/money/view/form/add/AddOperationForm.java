@@ -18,10 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.kobra.money.R;
 import com.kobra.money.entity.Category;
+import com.kobra.money.entity.User;
 import com.kobra.money.include.Finder;
 import com.kobra.money.include.UserException;
 import com.kobra.money.include.Validate;
 import com.kobra.money.model.CategoryModel;
+import com.kobra.money.view.FormFieldView;
 import com.kobra.money.view.dialog.EditTextDialog;
 import com.kobra.money.view.dialog.SelectCategoryDialog;
 import com.kobra.money.view.form.Form;
@@ -51,17 +53,21 @@ public class AddOperationForm extends Form {
 
     @Override
     public void submit() {
-        UserException exception;
+        UserException exception = new UserException();
+        boolean success = true;
         for (FormField formField : formFields) {
             if(formField.isRequired()) {
                 exception = Validate.validateFormField(formField);
                 if(exception.getCode() != 0) {
-                    submitEvent.onError(exception);
-                    return;
+                    submitEvent.onError(exception, formField);
+                    success = false;
                 }
             }
         }
-        submitEvent.onSuccess(getFormValues());
+
+        if(success) {
+            submitEvent.onSuccess();
+        }
     }
 
     @Override
@@ -74,7 +80,7 @@ public class AddOperationForm extends Form {
         }
 
         for(FormField field : formFields) {
-            field.setValue("");
+            field.getFieldView().setValue("");
         }
     }
 
@@ -82,15 +88,15 @@ public class AddOperationForm extends Form {
     public void setFormView(@NonNull View formView) {
         super.setFormView(formView);
         categoryTable = new CategoryTable(context, formView.findViewById(R.id.categoryTable));
-        initFields();
-        initSelectCategoryButton();
-        amountEdit = new AmountEditText(formView.findViewById(R.id.editAmount));
+        amountEdit = new AmountEditText(context, formView.findViewById(R.id.editAmount));
         amountEdit.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 amountEditDialog.show();
             }
         });
+        initFields();
+        initSelectCategoryButton();
     }
 
     public void setCategories(List<Category> categories) {
@@ -110,7 +116,7 @@ public class AddOperationForm extends Form {
                 categoryTableItem.getView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        long categoryId = (field.getValue().isEmpty()) ? 0 : Long.parseLong(field.getValue());
+                        long categoryId = (field.getFieldView().getValue().isEmpty()) ? 0 : Long.parseLong(field.getFieldView().getValue());
                         Category clickCategory = categoryTableItem.getCategory();
 
                         for(CategoryTable.CategoryTableItem categoryTableItem : categoryTableItems) {
@@ -118,9 +124,9 @@ public class AddOperationForm extends Form {
                         }
 
                         if(clickCategory.getId() == categoryId) {
-                            field.setValue("");
+                            field.getFieldView().setValue("");
                         } else {
-                            field.setValue(Long.toString(clickCategory.getId()));
+                            field.getFieldView().setValue(Long.toString(clickCategory.getId()));
                             categoryTableItem.setSelectedView(true);
                         }
 
@@ -155,8 +161,8 @@ public class AddOperationForm extends Form {
 
     private void initFields() {
         if(formView != null) {
-            formFields.add(new FormField("category", "category_id"));
-            formFields.add(new FormField("amount", "amount"));
+            formFields.add(new FormField("category", "category_id", amountEdit));
+            formFields.add(new FormField("amount", "amount", categoryTable));
         }
     }
 
@@ -167,7 +173,7 @@ public class AddOperationForm extends Form {
             public void onAccept() {
                 Long selected = selectCategoryDialog.getSelected().get(0);
                 FormField field = formFields.get(Finder.searchByFieldName("category_id", formFields));
-                field.setValue(Long.toString(selected));
+                field.getFieldView().setValue(Long.toString(selected));
 
                 List<CategoryTable.CategoryTableItem> categoryTableItems = categoryTable.getCategoryItems();
                 boolean find = false;
@@ -195,7 +201,7 @@ public class AddOperationForm extends Form {
     private void initAmountEditDialog() {
         amountEditDialog = new EditTextDialog(context);
         amountEditDialog.setDialogTitle(context.getString(R.string.amount_field));
-        amountEditDialog.setEditText(new AmountEditText());
+        amountEditDialog.setEditText(new AmountEditText(context));
         amountEditDialog.setHintText(context.getString(R.string.amount_field));
         amountEditDialog.setEditTextType(InputType.TYPE_CLASS_NUMBER);
         amountEditDialog.setEvent(new EditTextDialog.Event() {
@@ -204,7 +210,7 @@ public class AddOperationForm extends Form {
                 amountEdit.setValue(value);
 
                 FormField amountField = formFields.get(Finder.searchByFieldName("amount", formFields));
-                amountField.setValue(value);
+                amountField.getFieldView().setValue(value);
             }
         });
     }

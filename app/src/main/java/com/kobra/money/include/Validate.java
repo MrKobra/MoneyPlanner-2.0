@@ -16,22 +16,22 @@ public class Validate {
 
         switch (formField.getType()) {
             case "username":
-                if(formField.getValue().length() < minUsernameLength) {
+                if(formField.getFieldView().getValue().length() < minUsernameLength) {
                     userException.setCode(1);
                 }
                 break;
             case "password":
-                if(formField.getValue().length() < minPasswordLength) {
+                if(formField.getFieldView().getValue().length() < minPasswordLength) {
                     userException.setCode(2);
                 }
                 break;
             case "category":
-                if(formField.getValue().length() == 0 || formField.getValue().equals("0")) {
+                if(formField.getFieldView().getValue().length() == 0 || formField.getFieldView().getValue().equals("0")) {
                     userException.setCode(6);
                 }
                 break;
             case "amount":
-                if(formField.getValue().length() == 0 || formField.getValue().equals("0")) {
+                if(formField.getFieldView().getValue().length() == 0 || formField.getFieldView().getValue().equals("0")) {
                     userException.setCode(5);
                 }
                 break;

@@ -165,7 +165,8 @@ public class OperationController extends Controller {
                 .getForm();
         addOperationView.setSubmitEvent(new Form.Submit() {
             @Override
-            public void onSuccess(HashMap<String, String> fields) {
+            public void onSuccess() {
+                HashMap<String, String> fields = addOperationView.getFormValues();
                 if(!fields.containsKey("user_id")) {
                     fields.put("user_id", Long.toString(AuthController.authUser.getId()));
                 }
@@ -190,8 +191,9 @@ public class OperationController extends Controller {
             }
 
             @Override
-            public void onError(UserException exception) {
-                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onError(UserException exception, Form.FormField formField) {
+                formField.getFieldView().setError(true);
+                //Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

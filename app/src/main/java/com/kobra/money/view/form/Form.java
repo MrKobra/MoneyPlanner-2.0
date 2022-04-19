@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.kobra.money.R;
 import com.kobra.money.include.UserException;
+import com.kobra.money.view.FormFieldView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public abstract class Form {
         HashMap<String, String> formValues = new HashMap<>();
         if(formFields != null && formFields.size() > 0) {
             for (FormField field : formFields) {
-                formValues.put(field.getName(), field.getValue());
+                formValues.put(field.getName(), field.getFieldView().getValue());
             }
         }
         return formValues;
@@ -90,24 +91,20 @@ public abstract class Form {
     }
 
     public static class FormField {
-        private String value;
         private String type;
         private String name;
         private boolean required;
+        private FormFieldView fieldView;
 
-        public FormField(String type, String name) {
+        public FormField(String type, String name, FormFieldView fieldView) {
             this.type = type;
             this.name = name;
-            value = "";
+            this.fieldView = fieldView;
             required = true;
         }
 
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
+        public FormFieldView getFieldView() {
+            return fieldView;
         }
 
         public boolean isRequired() {
@@ -147,7 +144,7 @@ public abstract class Form {
     }
 
     public interface Submit {
-        void onSuccess(HashMap<String, String> fieldsValue);
-        void onError(UserException exception);
+        void onSuccess();
+        void onError(UserException exception, FormField fieldView);
     }
 }

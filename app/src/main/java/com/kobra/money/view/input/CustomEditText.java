@@ -4,14 +4,19 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-public abstract class CustomEditText {
-    protected EditText editText;
+import com.kobra.money.view.FormFieldView;
 
-    public CustomEditText(EditText editText) {
+public abstract class CustomEditText implements FormFieldView {
+    protected EditText editText;
+    protected Context context;
+
+    public CustomEditText(Context context, EditText editText) {
         this.editText = editText;
+        this.context = context;
     }
 
-    public CustomEditText() {
+    public CustomEditText(Context context) {
+        this.context = context;
         editText = null;
     }
 
@@ -22,8 +27,4 @@ public abstract class CustomEditText {
     public EditText getEditText() {
         return editText;
     }
-
-    public abstract String getValue();
-
-    public abstract void setValue(String value);
 }

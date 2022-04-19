@@ -1,12 +1,17 @@
 package com.kobra.money.view.input;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+
 import com.kobra.money.R;
+import com.kobra.money.view.FormFieldView;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -17,14 +22,13 @@ public class AmountEditText extends CustomEditText implements TextWatcher {
     private boolean format;
     private int separatorCount;
 
-    public AmountEditText(EditText editText) {
-        super();
-        setEditText(editText);
+    public AmountEditText(Context context, EditText editText) {
+        super(context, editText);
         separatorCount = 0;
     }
 
-    public AmountEditText() {
-        super();
+    public AmountEditText(Context context) {
+        super(context);
         separatorCount = 0;
     }
 
@@ -47,6 +51,15 @@ public class AmountEditText extends CustomEditText implements TextWatcher {
             editText.setText(amountStr);
         } else {
             editText.setText("");
+        }
+    }
+
+    @Override
+    public void setError(boolean error) {
+        if(error) {
+            editText.setBackgroundTintList(context.getColorStateList(R.color.error));
+        } else {
+            editText.setBackgroundTintList(context.getColorStateList(R.color.normal));
         }
     }
 
