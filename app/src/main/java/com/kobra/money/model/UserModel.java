@@ -5,9 +5,8 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.kobra.money.entity.User;
-import com.kobra.money.request.CustomRequest;
+import com.kobra.money.request.HttpRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,7 +25,8 @@ public class UserModel {
         return user;
     }
 
-    public void setUser(HashMap<String, String> args, CustomRequest request, Event event) {
+    /*
+    public void setUser(HashMap<String, String> args, HttpRequest request, Event event) {
         setRunning(true);
         user = null;
 
@@ -60,9 +60,9 @@ public class UserModel {
             }
         };
 
-        request.request(responseListener, errorListener, CustomRequest.Entity.USER,
+        request.request(responseListener, errorListener, HttpRequest.Entity.USER,
                 "check_auth", args);
-    }
+    } */
 
     public boolean isRunning() {
         return running;

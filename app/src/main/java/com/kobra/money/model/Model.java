@@ -34,18 +34,13 @@ public abstract class Model {
         void onError(String error);
     }
 
-    public interface AddEvent {
-        void onSuccess();
-        void onError(String error);
-    }
-
-    public interface DeleteEvent {
-        void onSuccess();
-        void onError(String error);
-    }
-
     public interface EditEvent<T> {
         void onSuccess(T item);
+        void onError(String error);
+    }
+
+    public interface Event {
+        void onSuccess();
         void onError(String error);
     }
 
