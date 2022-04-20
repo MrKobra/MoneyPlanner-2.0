@@ -6,7 +6,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.kobra.money.R;
 import com.kobra.money.entity.Category;
-import com.kobra.money.request.CustomRequest;
+import com.kobra.money.request.HttpRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,42 +23,36 @@ public class CategoryModel extends Model {
         super(context);
     }
 
-    public void getItemsFromHTTP(HashMap<String, String> args, CustomRequest request,
-                                 GetEvent<Category> event) {
+    public void getItemsFromHTTP(HashMap<String, String> args, GetEvent<Category> event) {
         setRun(true);
         this.args = args;
 
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject result = new JSONObject(response);
-                    if(result.getInt("error") == 0) {
-                        JSONArray items = result.getJSONArray("items");
-                        if(event != null) event.onSuccess(getCategoryList(items));
-                    } else {
-                        if(event != null) event.onError(context.getString(R.string.get_error));
+        HttpRequest.getInstance(context).sendRequest(args, HttpRequest.Entity.CATEGORY,
+                HttpRequest.Action.GET, new HttpRequest.Event() {
+                    @Override
+                    public void onSuccess(JSONObject response) {
+                        try {
+                            if(response.getInt("error") == 0) {
+                                JSONArray items = response.getJSONArray("items");
+                                if(event != null) event.onSuccess(getCategoryList(items));
+                            } else {
+                                if(event != null) event.onError(context.getString(R.string.get_error));
+                            }
+                        } catch (JSONException exception) {
+                            exception.printStackTrace();
+                            if(event != null) event.onError(context.getString(R.string.get_error));
+                        }
+
+                        setRun(false);
                     }
-                } catch (JSONException exception) {
-                    exception.printStackTrace();
-                    if(event != null) event.onError(context.getString(R.string.get_error));
-                }
 
-                setRun(false);
-            }
-        };
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                if(event != null) event.onError(context.getString(R.string.network_error));
-                setRun(false);
-            }
-        };
-
-        request.request(responseListener, errorListener, CustomRequest.Entity.CATEGORY,
-                "get", args);
+                    @Override
+                    public void onError(Exception exception) {
+                        exception.printStackTrace();
+                        if(event != null) event.onError(context.getString(R.string.network_error));
+                        setRun(false);
+                    }
+                });
     }
 
     private List<Category> getCategoryList(JSONArray items) {
@@ -93,7 +87,7 @@ public class CategoryModel extends Model {
         add(items);
     }
 
-    public void setList(HashMap<String, String> args, CustomRequest request, Event event) {
+    public void setList(HashMap<String, String> args, HttpRequest request, Event event) {
         setRunning(true);
 
         queryArgs = args;
@@ -128,11 +122,11 @@ public class CategoryModel extends Model {
             }
         };
 
-        request.request(responseListener, errorListener, CustomRequest.Entity.CATEGORY,
+        request.request(responseListener, errorListener, HttpRequest.Entity.CATEGORY,
                 "get", args);
     }
 
-    public void update(CustomRequest request, Event event) {
+    public void update(HttpRequest request, Event event) {
         setRunning(true);
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -164,7 +158,7 @@ public class CategoryModel extends Model {
             }
         };
 
-        request.request(responseListener, errorListener, CustomRequest.Entity.CATEGORY,
+        request.request(responseListener, errorListener, HttpRequest.Entity.CATEGORY,
                 "get", queryArgs);
     }
 

@@ -1,20 +1,17 @@
 package com.kobra.money.model;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.kobra.money.R;
-import com.kobra.money.controller.OperationController;
 import com.kobra.money.entity.Operation;
-import com.kobra.money.request.CustomRequest;
+import com.kobra.money.request.HttpRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,111 +23,97 @@ public class OperationModel extends Model {
         super(context);
     }
 
-    public void getItemsFromHTTP(HashMap<String, String> args, CustomRequest request,
-                                 GetEvent<Operation> event) {
+    public void getItemsFromHTTP(HashMap<String, String> args, GetEvent<Operation> event) {
         setRun(true);
         this.args = args;
 
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject result = new JSONObject(response);
-                    if(result.getInt("error") == 0) {
-                        JSONArray items = result.getJSONArray("items");
-                        if(event != null) event.onSuccess(getOperationList(items));
-                    } else {
-                        if(event != null) event.onError(context.getString(R.string.get_error));
+        HttpRequest.getInstance(context).sendRequest(args, HttpRequest.Entity.OPERATION,
+                HttpRequest.Action.GET, new HttpRequest.Event() {
+                    @Override
+                    public void onSuccess(JSONObject response) {
+                        try {
+                            if (response.getInt("error") == 0) {
+                                JSONArray items = response.getJSONArray("items");
+                                if (event != null) event.onSuccess(getOperationList(items));
+                            } else {
+                                if (event != null) event.onError(context.getString(R.string.get_error));
+                            }
+                        } catch (JSONException exception) {
+                            exception.printStackTrace();
+                            if (event != null) event.onError(context.getString(R.string.get_error));
+                        }
+
+                        setRun(false);
                     }
-                } catch (JSONException exception) {
-                    exception.printStackTrace();
-                    if(event != null) event.onError(context.getString(R.string.get_error));
-                }
 
-                setRun(false);
-            }
-        };
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                if(event != null) event.onError(context.getString(R.string.network_error));
-                setRun(false);
-            }
-        };
-
-        request.request(responseListener, errorListener, CustomRequest.Entity.OPERATION,
-                "get", args);
+                    @Override
+                    public void onError(Exception exception) {
+                        exception.printStackTrace();
+                        if (event != null) event.onError(context.getString(R.string.network_error));
+                        setRun(false);
+                    }
+                });
     }
 
-    public void updateItemsFromHTTP(CustomRequest request, GetEvent<Operation> event) {
+    public void updateItemsFromHTTP(GetEvent<Operation> event) {
         setRun(true);
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject result = new JSONObject(response);
-                    if(result.getInt("error") == 0) {
-                        JSONArray items = result.getJSONArray("items");
-                        if(event != null) event.onSuccess(getOperationList(items));
-                    } else {
-                        if(event != null) event.onError(context.getString(R.string.get_error));
+
+        HttpRequest.getInstance(context).sendRequest(args, HttpRequest.Entity.OPERATION,
+                HttpRequest.Action.GET, new HttpRequest.Event() {
+                    @Override
+                    public void onSuccess(JSONObject response) {
+                        try {
+                            if(response.getInt("error") == 0) {
+                                JSONArray items = response.getJSONArray("items");
+                                if (event != null) event.onSuccess(getOperationList(items));
+                            } else {
+                                event.onError(context.getString(R.string.get_error));
+                            }
+                        } catch (JSONException exception) {
+                            exception.printStackTrace();
+                            if (event != null) event.onError(context.getString(R.string.get_error));
+                        }
+
+                        setRun(false);
                     }
-                } catch (JSONException exception) {
-                    exception.printStackTrace();
-                    if(event != null) event.onError(context.getString(R.string.get_error));
-                }
 
-                setRun(false);
-            }
-        };
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                if(event != null) event.onError(context.getString(R.string.network_error));
-                setRun(false);
-            }
-        };
-
-        request.request(responseListener, errorListener, CustomRequest.Entity.OPERATION,
-                "get", args);
+                    @Override
+                    public void onError(Exception exception) {
+                        exception.printStackTrace();
+                        if(event != null) event.onError(context.getString(R.string.network_error));
+                        setRun(false);
+                    }
+                });
     }
 
-    public void addOperation(HashMap<String, String> args, CustomRequest request, AddEvent event) {
+    public void addOperation(HashMap<String, String> args, Event event) {
         setRun(true);
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject result = new JSONObject(response);
-                    if(result.getInt("error") == 0) {
-                        if(event != null) event.onSuccess();
-                    } else {
-                        if(event != null) event.onError(context.getString(R.string.get_error));
+
+        HttpRequest.getInstance(context).sendRequest(args, HttpRequest.Entity.OPERATION,
+                HttpRequest.Action.ADD, new HttpRequest.Event() {
+                    @Override
+                    public void onSuccess(JSONObject response) {
+                        try {
+                            if(response.getInt("error") == 0) {
+                                if (event != null) event.onSuccess();
+                            } else {
+                                if (event != null) event.onError(context.getString(R.string.add_error));
+                            }
+                        } catch (JSONException exception) {
+                            exception.printStackTrace();
+                            if(event != null) event.onError(context.getString(R.string.get_error));
+                        }
+
+                        setRun(false);
                     }
-                } catch (JSONException exception) {
-                    exception.printStackTrace();
-                    if(event != null) event.onError(context.getString(R.string.get_error));
-                }
 
-                setRun(false);
-            }
-        };
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                if(event != null) event.onError(context.getString(R.string.network_error));
-                setRun(false);
-            }
-        };
-
-        request.request(responseListener, errorListener, CustomRequest.Entity.OPERATION,
-                "create", args);
+                    @Override
+                    public void onError(Exception exception) {
+                        exception.printStackTrace();
+                        if(event != null) event.onError(context.getString(R.string.network_error));
+                        setRun(false);
+                    }
+                });
     }
 
     private List<Operation> getOperationList(JSONArray items) {
@@ -164,7 +147,7 @@ public class OperationModel extends Model {
         add(items);
     }
 
-    public void update(CustomRequest request, Event event) {
+    public void update(HttpRequest request, Event event) {
         setRunning(true);
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -196,7 +179,7 @@ public class OperationModel extends Model {
             }
         };
 
-        request.request(responseListener, errorListener, CustomRequest.Entity.OPERATION,
+        request.request(responseListener, errorListener, HttpRequest.Entity.OPERATION,
                 "get", queryArgs);
     }
 
