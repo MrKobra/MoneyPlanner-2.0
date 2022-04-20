@@ -3,19 +3,16 @@ package com.kobra.money.controller;
 import android.content.Context;
 
 import com.kobra.money.model.Model;
-import com.kobra.money.request.CustomRequest;
+import com.kobra.money.request.HttpRequest;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Queue;
 
 public abstract class Controller {
     protected Context context;
-    protected CustomRequest request;
 
     public Controller(Context context) {
         this.context = context;
-        request = new CustomRequest(context);
     }
 
     public static class ModelRequestQueue {

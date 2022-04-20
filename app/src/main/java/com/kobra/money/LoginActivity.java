@@ -23,8 +23,9 @@ public class LoginActivity extends AppCompatActivity {
         loginForm = (LoginForm) new LoginForm.Builder(context)
                 .setFormView(findViewById(R.id.loginForm))
                 .getForm();
-        authController = new AuthController(context);
-        authController.setLoginForm(loginForm);
+        authController = new AuthController.Builder(context)
+                .setLoginOption(loginForm)
+                .getController();
     }
 
     @Override

@@ -1,29 +1,21 @@
 package com.kobra.money.controller;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.toolbox.Volley;
 import com.kobra.money.entity.Category;
 import com.kobra.money.entity.Operation;
 import com.kobra.money.include.UserException;
 import com.kobra.money.model.CategoryModel;
 import com.kobra.money.model.Model;
 import com.kobra.money.model.OperationModel;
-import com.kobra.money.request.CustomRequest;
 import com.kobra.money.view.OperationView;
 import com.kobra.money.view.form.Form;
 import com.kobra.money.view.form.add.AddOperationForm;
 
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Queue;
 
 public class OperationController extends Controller {
     private List<Operation> operations;
@@ -52,7 +44,7 @@ public class OperationController extends Controller {
             operationRequestQueue.add(new ModelRequest() {
                 @Override
                 public void request() {
-                    operationModel.getItemsFromHTTP(args, request, new Model.GetEvent<Operation>() {
+                    operationModel.getItemsFromHTTP(args, new Model.GetEvent<Operation>() {
                         @Override
                         public void onSuccess(List<Operation> items) {
                             operations = items;
@@ -74,7 +66,7 @@ public class OperationController extends Controller {
             categoryRequestQueue.add(new ModelRequest() {
                 @Override
                 public void request() {
-                    categoryModel.getItemsFromHTTP(args, request, new Model.GetEvent<Category>() {
+                    categoryModel.getItemsFromHTTP(args, new Model.GetEvent<Category>() {
                         @Override
                         public void onSuccess(List<Category> items) {
                             categories = items;
@@ -97,7 +89,7 @@ public class OperationController extends Controller {
             operationRequestQueue.add(new ModelRequest() {
                 @Override
                 public void request() {
-                    operationModel.updateItemsFromHTTP(request, new Model.GetEvent<Operation>() {
+                    operationModel.updateItemsFromHTTP(new Model.GetEvent<Operation>() {
                         @Override
                         public void onSuccess(List<Operation> items) {
                             operations = items;
@@ -173,7 +165,7 @@ public class OperationController extends Controller {
                 operationRequestQueue.add(new ModelRequest() {
                     @Override
                     public void request() {
-                        operationModel.addOperation(fields, request, new Model.AddEvent() {
+                        operationModel.addOperation(fields, new Model.Event() {
                             @Override
                             public void onSuccess() {
                                 addOperationView.resetForm();

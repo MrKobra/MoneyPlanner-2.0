@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = this;
-        authController = new AuthController(context);
+        authController = new AuthController.Builder(context).getController();
         appSettings = new AppSettings(context);
 
         String token = appSettings.getProperty("token");
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError() {
+            public void onError(String error) {
                 finish();
             }
         });
