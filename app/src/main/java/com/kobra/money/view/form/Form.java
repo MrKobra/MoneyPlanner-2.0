@@ -2,13 +2,9 @@ package com.kobra.money.view.form;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.EditText;
-
-import androidx.annotation.NonNull;
 
 import com.kobra.money.R;
 import com.kobra.money.include.UserException;
-import com.kobra.money.view.FormFieldView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

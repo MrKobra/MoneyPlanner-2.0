@@ -1,10 +1,9 @@
-package com.kobra.money.view.input;
+package com.kobra.money.view.form.input.edittext;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.widget.EditText;
 
-import com.kobra.money.view.FormFieldView;
+import com.kobra.money.view.form.FormFieldView;
 
 public abstract class CustomEditText implements FormFieldView {
     protected EditText editText;

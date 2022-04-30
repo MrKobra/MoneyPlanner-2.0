@@ -1,16 +1,12 @@
 package com.kobra.money.view.dialog;
 
 import android.content.Context;
-import android.text.InputType;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import androidx.cardview.widget.CardView;
 
 import com.kobra.money.R;
-import com.kobra.money.view.input.CustomEditText;
+import com.kobra.money.view.form.input.edittext.CustomEditText;
 
 public class EditTextDialog extends FullscreenDialog {
     private CustomEditText editText;

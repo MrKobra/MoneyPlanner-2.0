@@ -1,4 +1,4 @@
-package com.kobra.money.view.input;
+package com.kobra.money.view.form.input.edittext;
 
 import android.content.Context;
 import android.widget.EditText;

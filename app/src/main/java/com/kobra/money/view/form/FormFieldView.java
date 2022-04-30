@@ -1,4 +1,4 @@
-package com.kobra.money.view;
+package com.kobra.money.view.form;
 
 public interface FormFieldView {
     String getValue();

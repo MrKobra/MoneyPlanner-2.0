@@ -2,14 +2,11 @@ package com.kobra.money.view.form;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.EditText;
 
 import com.kobra.money.R;
-import com.kobra.money.controller.AuthController;
-import com.kobra.money.entity.User;
 import com.kobra.money.include.UserException;
 import com.kobra.money.include.Validate;
-import com.kobra.money.view.input.SimpleEditText;
+import com.kobra.money.view.form.input.edittext.SimpleEditText;
 
 public class LoginForm extends Form {
     private SimpleEditText usernameEdit;

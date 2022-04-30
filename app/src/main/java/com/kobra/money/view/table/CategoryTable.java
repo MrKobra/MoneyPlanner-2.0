@@ -13,26 +13,19 @@ import androidx.cardview.widget.CardView;
 
 import com.kobra.money.R;
 import com.kobra.money.entity.Category;
-import com.kobra.money.model.CategoryModel;
-import com.kobra.money.view.FormFieldView;
-import com.kobra.money.view.form.Form;
+import com.kobra.money.include.ArrayListListener;
+import com.kobra.money.view.form.FormFieldView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-public class CategoryTable implements FormFieldView {
-    private Context context;
-    private CustomTable table;
-    private List<Category> categories;
-    private List<CategoryTableItem> categoryItems;
-
-    private List<String> selected;
+public class CategoryTable extends CustomTable {
+    protected List<Category> categories;
+    protected ArrayListListener<CategoryTableItem> categoryItems;
 
     public CategoryTable(Context context, TableLayout table) {
-        this.context = context;
-        this.table = new CustomTable(context, table);
-        categoryItems = new ArrayList<>();
+        super(context, table);
+        categoryItems = new ArrayListListener<>();
     }
 
     public void setCategories(List<Category> categories) {
@@ -40,16 +33,12 @@ public class CategoryTable implements FormFieldView {
         generateCategoryTableItems();
     }
 
-    public List<CategoryTableItem> getCategoryItems() {
+    public ArrayListListener<CategoryTableItem> getCategoryItems() {
         return categoryItems;
     }
 
-    public void setColumn(int column) {
-        table.setColumn(column);
-    }
-
     public void print(int rowPadding) {
-        table.print(getCategoryViews(), rowPadding);
+        super.print(getCategoryViews(), rowPadding);
     }
 
     private void generateCategoryTableItems() {
@@ -74,31 +63,6 @@ public class CategoryTable implements FormFieldView {
         return views;
     }
 
-    @Override
-    public String getValue() {
-        return String.join(",", selected);
-    }
-
-    @Override
-    public void setValue(String value) {
-
-    }
-
-    @Override
-    public void setError(boolean error) {
-        if(error) {
-            for (CategoryTableItem tableItem : categoryItems) {
-                CardView categoryIcon = tableItem.getView().findViewById(R.id.categoryIcon);
-                categoryIcon.setCardBackgroundColor(context.getColor(R.color.error));
-            }
-        } else {
-            for (CategoryTableItem tableItem : categoryItems) {
-                CardView categoryIcon = tableItem.getView().findViewById(R.id.categoryIcon);
-                categoryIcon.setCardBackgroundColor(context.getColor(R.color.normal));
-            }
-        }
-    }
-
     public static class CategoryTableItem {
         private Context context;
         private View view;
@@ -116,17 +80,6 @@ public class CategoryTable implements FormFieldView {
 
         public Category getCategory() {
             return category;
-        }
-
-        public void setSelectedView(boolean select) {
-            CardView categoryIcon = (CardView) view.findViewById(R.id.categoryIcon);
-            if(categoryIcon != null) {
-                if(select) {
-                    categoryIcon.setCardBackgroundColor(context.getColor(R.color.active));
-                } else {
-                    categoryIcon.setCardBackgroundColor(context.getColor(R.color.normal));
-                }
-            }
         }
 
         private void generateView() {

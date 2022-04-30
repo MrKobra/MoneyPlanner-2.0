@@ -1,17 +1,11 @@
-package com.kobra.money.view.input;
+package com.kobra.money.view.form.input.edittext;
 
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
 
 import com.kobra.money.R;
-import com.kobra.money.view.FormFieldView;
 
 import java.text.NumberFormat;
 import java.util.Locale;

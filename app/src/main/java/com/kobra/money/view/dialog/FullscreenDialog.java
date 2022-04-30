@@ -2,6 +2,7 @@ package com.kobra.money.view.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ public class FullscreenDialog {
         this.context = context;
         dialog = new Dialog(context, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
         dialog.setContentView(dialogViewId);
-        setBackOnClickListener();
+        setOnBackClickListener(null);
     }
 
     public Dialog getDialog() {
@@ -34,15 +35,31 @@ public class FullscreenDialog {
         dialog.show();
     }
 
-    protected void setBackOnClickListener() {
+    public void setOnBackClickListener(View.OnClickListener backListener) {
         ImageView backIcon = (ImageView) dialog.findViewById(R.id.arrowBack);
         if(backIcon != null) {
             backIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dialog.dismiss();
+                    if(backListener != null) {
+                        backListener.onClick(view);
+                    } else {
+                        dialog.cancel();
+                    }
                 }
             });
+        }
+    }
+
+    public void setOnCancelListener(DialogInterface.OnCancelListener cancelListener) {
+        if(cancelListener != null) {
+            dialog.setOnCancelListener(cancelListener);
+        }
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener dismissListener) {
+        if(dismissListener != null) {
+            dialog.setOnDismissListener(dismissListener);
         }
     }
 }
