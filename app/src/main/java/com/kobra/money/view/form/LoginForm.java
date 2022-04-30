@@ -2,14 +2,16 @@ package com.kobra.money.view.form;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.EditText;
 
 import com.kobra.money.R;
-import com.kobra.money.controller.AuthController;
 import com.kobra.money.include.UserException;
 import com.kobra.money.include.Validate;
+import com.kobra.money.view.form.input.edittext.SimpleEditText;
 
 public class LoginForm extends Form {
+    private SimpleEditText usernameEdit;
+    private SimpleEditText passwordEdit;
+
     private LoginForm(Context context) {
         super(context);
     }
@@ -17,17 +19,27 @@ public class LoginForm extends Form {
     @Override
     public void setFormView(View formView) {
         super.setFormView(formView);
+        usernameEdit = new SimpleEditText(context, formView.findViewById(R.id.editUsername));
+        passwordEdit = new SimpleEditText(context, formView.findViewById(R.id.editPassword));
         initFields();
     }
 
     @Override
     public void submit() {
-        getFormFieldsValue();
-        UserException exception = checkFields();
-        if(exception.getCode() == 0) {
-            if(submitEvent != null) submitEvent.onSuccess(getFormValues());
-        } else {
-            if(submitEvent != null) submitEvent.onError(exception);
+        UserException exception = new UserException();
+        boolean success = true;
+        for (FormField field : formFields) {
+            if(field.isRequired()) {
+                exception = Validate.validateFormField(field);
+                if(exception.getCode() != 0) {
+                    submitEvent.onError(exception, field);
+                    success = false;
+                }
+            }
+        }
+
+        if(success) {
+            submitEvent.onSuccess();
         }
     }
 
@@ -38,36 +50,8 @@ public class LoginForm extends Form {
 
     private void initFields() {
         if(formView != null) {
-            formFields.add(new FormField("username","username"));
-            formFields.add(new FormField("password","password"));
-        }
-    }
-
-    private UserException checkFields() {
-        UserException exception = new UserException();
-
-        for(FormField field : formFields) {
-            exception = Validate.validateFormField(field);
-            if(exception.getCode() != 0) {
-                break;
-            }
-        }
-
-        return exception;
-    }
-
-    private void getFormFieldsValue() {
-        for(FormField field : formFields) {
-            switch (field.getName()) {
-                case "username":
-                    EditText username = formView.findViewById(R.id.editUsername);
-                    if(username != null) field.setValue(username.getText().toString());
-                    break;
-                case "password":
-                    EditText password = formView.findViewById(R.id.editPassword);
-                    if(password != null) field.setValue(password.getText().toString());
-                    break;
-            }
+            formFields.add(new FormField("username","username", usernameEdit));
+            formFields.add(new FormField("password","password", passwordEdit));
         }
     }
 

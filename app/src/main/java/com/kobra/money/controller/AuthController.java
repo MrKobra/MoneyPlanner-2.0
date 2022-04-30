@@ -108,10 +108,10 @@ public class AuthController extends Controller {
         this.loginForm = loginForm;
         loginForm.setSubmitEvent(new Form.Submit() {
             @Override
-            public void onSuccess(HashMap<String, String> fields) {
+            public void onSuccess() {
                 loginForm.showFormLoader();
 
-                auth(fields, new Event() {
+                auth(loginForm.getFormValues(), new Event() {
                     @Override
                     public void onSuccess() {
                         loginForm.hideFormLoader();
@@ -129,8 +129,8 @@ public class AuthController extends Controller {
             }
 
             @Override
-            public void onError(UserException exception) {
-                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onError(UserException exception, Form.FormField formField) {
+                formField.getFieldView().setError(true);
             }
         });
     }
